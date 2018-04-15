@@ -59,16 +59,19 @@ def set_to_standard(series, regexs, std_value):
       if m is not None: # if there's a match
          changed_values.append(value)
          indices.append(index)
+         
+   changed_values = pd.Series((v for v in changed_values))
 
    print("The following " + str(len(changed_values)) + " values have been changed to: " + std_value)
    print("")
-   print(changed_values)
+   
+   print(changed_values.value_counts())
    
    std_series[indices] = std_value
    
    return std_series
 
-ai_regexs = [r"(Msc )?A(rtificial|.)?.?[Ii].*"] #WARNING premaster to remove
+ai_regexs = [r"(Msc )?A(rtificial|.)?.?[Ii].*(?<!premaster)$"] #WARNING premaster to remove
 
 standard_1 = set_to_standard(odi_df.iloc[:,1], ai_regexs, 'AI')
 
@@ -80,7 +83,11 @@ ba_regexs = ["B(usiness )?A(nalytics)?"]
 
 standard_3 = set_to_standard(standard_2, ba_regexs, 'BA')
 
-bi_regexs = [r"[Ee]ngineering"] #this is: Big Data Engineering
+bde_regexs = [r".*[Ee]ngineering"] #this is: Big Data Engineering
 
-standard_4 = set_to_standard(standard_3, bi_regexs, 'BDE') #NOT WORKING
+standard_4 = set_to_standard(standard_3, bde_regexs, 'BDE')
+
+cls_regexs = [".*[cC]omp.*ational.*ience.*"]
+
+standard_5 = set_to_standard(standard_4, cls_regexs, 'CLS') 
 
