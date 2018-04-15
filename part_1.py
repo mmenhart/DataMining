@@ -71,15 +71,15 @@ def set_to_standard(series, regexs, std_value):
    
    return std_series
 
-ai_regexs = [r"(Msc )?A(rtificial|.)?.?[Ii].*(?<!premaster)$"] #WARNING premaster to remove
+ai_regexs = [r"(Msc)?.*A(rtificial)?.?( )?[Ii].*(?<!premaster)$"] #WARNING premaster to remove
 
 standard_1 = set_to_standard(odi_df.iloc[:,1], ai_regexs, 'AI')
 
-bio_regexs = [r"[Bb]io"]   # Bioinformatics
+bio_regexs = [r".*[Bb]io"]   # Bioinformatics
 
 standard_2 = set_to_standard(standard_1, bio_regexs, 'BI')
 
-ba_regexs = ["B(usiness )?A(nalytics)?"]
+ba_regexs = [".*[Bb](usiness )?[Aa](nalytics)?"]
 
 standard_3 = set_to_standard(standard_2, ba_regexs, 'BA')
 
@@ -87,7 +87,22 @@ bde_regexs = [r".*[Ee]ngineering"] #this is: Big Data Engineering
 
 standard_4 = set_to_standard(standard_3, bde_regexs, 'BDE')
 
-cls_regexs = [".*[cC]omp.*ational.*ience.*"]
+cls_regexs = [".*[cC]om(o)?p.*ational.*ience.*|[Cc][Ll][Ss]"]
 
 standard_5 = set_to_standard(standard_4, cls_regexs, 'CLS') 
 
+cs_regexs = [r"^(MSc).*ience", r"^([Cc][Ss])"] # ^(?!.*(metrics))
+
+standard_6 = set_to_standard(standard_5, cs_regexs, 'CS')
+
+ec_regexs = ["^.*(EOR|[Ee]conom(e)?trics|OR|Economics).*$"]
+
+standard_7 = set_to_standard(standard_6, ec_regexs, 'EC')
+
+qrm_regexs = [".*([Qq]uantit.*g[ea]ment|QRM)$"]
+standard_8 = set_to_standard(standard_7, qrm_regexs, 'QRM')
+
+phd_regexs = ["^(PhD)"]
+standard_9 = set_to_standard(standard_8, phd_regexs, 'PHD')
+
+standard_9.value_counts()#.sort_index()
