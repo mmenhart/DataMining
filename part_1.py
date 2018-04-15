@@ -110,3 +110,8 @@ others_regexs_2 = [r"MS|MPA|CSL"]
 standard_11 = set_to_standard(standard_10, others_regexs_2, 'others')
 
 standard_11.value_counts()
+
+standard_11 = standard_11.rename("Program")
+
+programs = standard_11.copy() # pandas Series that contains standardized program names
+print(programs)
