@@ -13,9 +13,15 @@ for i in df:
     plt.show()
 
 ###############
-# if you don't have a DataFrame (list, or single column of data then do it without the for loop
-# just replace 'your_list' with the variable name
+# probably easier to turn you list into a DataFrame and run code above, but you can do the following:
+# if you don't have a DataFrame (list, or single column of data) then do it without the for loop
+# just replace 'your_list' with your lists name
 # don't forget the plt.show() before creating another plot
 
-your_list.value_counts().plot(kind='bar')
+valueCounts = [[x,your_list.count(x)] for x in set(your_list)]
+plt.bar((valueCounts[0][0],valueCounts[1][0]) , (valueCounts[1][0],valueCounts[1][1]))
 plt.show()
+
+# first line calculates amount of each value in your list
+# in the brackets first set of valueCounts are the numbers, second set will be the corresponding name for that value
+# valueCounts[0][0] is the amount of the first value, valueCounts[1][0] is the name of the first value
