@@ -42,30 +42,29 @@ odi_df.iloc[:, 1].value_counts().sort_index()
 # Here we find different ways of saying the same thing
 # Let's make them uniform.
 # starting from the AI master
-   
+
 def set_to_standard(series, regexs, std_value):
-   
+
    changed_values = []
    indices = []
    std_series = series.copy()
-   
+
    for index, value in std_series.iteritems():
       for regex in regexs:
-         
+
          if index in indices: #prevents an entry to be counted twice
             continue
          m = match(regex, value) #find match for any of the reg. expressions
-         
+
       if m is not None: # if there's a match
          changed_values.append(value)
          indices.append(index)
 
    print("The following " + str(len(changed_values)) + " values have been changed to: " + std_value)
-   print("")
    print(changed_values)
-   
+   print()
    std_series[indices] = std_value
-   
+
    return std_series
 
 ai_regexs = [r"(Msc )?A(rtificial|.)?.?[Ii].*"] #WARNING premaster to remove
@@ -83,4 +82,3 @@ standard_3 = set_to_standard(standard_2, ba_regexs, 'BA')
 bi_regexs = [r"[Ee]ngineering"] #this is: Big Data Engineering
 
 standard_4 = set_to_standard(standard_3, bi_regexs, 'BDE') #NOT WORKING
-
