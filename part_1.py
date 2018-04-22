@@ -41,8 +41,12 @@ odi_df.iloc[:, 1].value_counts().sort_index()
 
 # Here we find different ways of saying the same thing
 # Let's make them uniform.
+<<<<<<< HEAD
 # starting from the AI master
 
+=======
+   
+>>>>>>> 8a9d6f90325ef4f1b8c4f344bfa2eb140b996293
 def set_to_standard(series, regexs, std_value):
 
    changed_values = []
@@ -59,26 +63,69 @@ def set_to_standard(series, regexs, std_value):
       if m is not None: # if there's a match
          changed_values.append(value)
          indices.append(index)
+         
+   changed_values = pd.Series((v for v in changed_values))
 
    print("The following " + str(len(changed_values)) + " values have been changed to: " + std_value)
+<<<<<<< HEAD
    print(changed_values)
    print()
+=======
+   print("")
+   
+   print(changed_values.value_counts())
+   
+>>>>>>> 8a9d6f90325ef4f1b8c4f344bfa2eb140b996293
    std_series[indices] = std_value
 
    return std_series
 
-ai_regexs = [r"(Msc )?A(rtificial|.)?.?[Ii].*"] #WARNING premaster to remove
+
+
+ai_regexs = [r"(Msc)?.*A(rtificial)?.?( )?[Ii].*(?<!premaster)$"] #WARNING premaster to remove
 
 standard_1 = set_to_standard(odi_df.iloc[:,1], ai_regexs, 'AI')
-
-bio_regexs = [r"[Bb]io"]   # Bioinformatics
+bio_regexs = [r".*[Bb]io"]   # Bioinformatics
 
 standard_2 = set_to_standard(standard_1, bio_regexs, 'BI')
-
-ba_regexs = ["B(usiness )?A(nalytics)?"]
+ba_regexs = [".*[Bb](usiness )?[Aa](nalytics)?"]
 
 standard_3 = set_to_standard(standard_2, ba_regexs, 'BA')
+bde_regexs = [r".*[Ee]ngineering"] #this is: Big Data Engineering
 
-bi_regexs = [r"[Ee]ngineering"] #this is: Big Data Engineering
+standard_4 = set_to_standard(standard_3, bde_regexs, 'BDE')
+cls_regexs = [".*[cC]om(o)?p.*ational.*ience.*|[Cc][Ll][Ss]"]
 
+standard_5 = set_to_standard(standard_4, cls_regexs, 'CLS') 
+standard_5.value_counts()#.sort_index()
+
+cs_regexs = [r".{0,4}(Computer Science.?|cs|CS)$"] # ^(?!.*(metrics))
+standard_6 = set_to_standard(standard_5, cs_regexs, 'CS')
+
+ec_regexs = ["^.*(EOR|[Ee]conom(e)?trics|OR|Economics).*$"]
+standard_7 = set_to_standard(standard_6, ec_regexs, 'EC')
+
+qrm_regexs = [".*([Qq]uantit.*g[ea]ment|QRM)$"]
+standard_8 = set_to_standard(standard_7, qrm_regexs, 'QRM')
+
+phd_regexs = ["^(PhD)"]
+standard_9 = set_to_standard(standard_8, phd_regexs, 'PHD')
+
+others_regexs = [r".*[^AI|BI|BA|BDE|CLS|CS|EC|QRM|PHD]$"]
+
+standard_10 = set_to_standard(standard_9, others_regexs, 'others')
+
+others_regexs_2 = [r"MS|MPA|CSL"]
+
+standard_11 = set_to_standard(standard_10, others_regexs_2, 'others')
+
+standard_11.value_counts()
+
+<<<<<<< HEAD
 standard_4 = set_to_standard(standard_3, bi_regexs, 'BDE') #NOT WORKING
+=======
+standard_11 = standard_11.rename("Program")
+
+programs = standard_11.copy() # pandas Series that contains standardized program names
+print(programs)
+>>>>>>> 8a9d6f90325ef4f1b8c4f344bfa2eb140b996293
